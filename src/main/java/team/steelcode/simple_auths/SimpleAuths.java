@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import team.steelcode.simple_auths.configs.JdbcConnections;
 import team.steelcode.simple_auths.data.PlayerCache;
 import team.steelcode.simple_auths.modules.events.ServerEventHandler;
+import team.steelcode.simple_auths.setup.ConfigSpecRegister;
 import team.steelcode.simple_auths.setup.ModCommandsRegister;
 
 import java.io.IOException;
@@ -30,6 +31,9 @@ public class SimpleAuths {
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        ConfigSpecRegister.register();
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
