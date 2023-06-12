@@ -1,14 +1,15 @@
 package team.steelcode.simple_auths.data.enums;
 
-public enum RegisterStatus implements IStatus {
-    ALREADY_EXISTS(StatusType.KO_WARN, "Player already registered."),
-    PLAYER_DOESNT_EXISTS(StatusType.KO_WARN, "Player doesn't exists"),
-    SUCCESSFULLY_REGISTER(StatusType.OK, "Successfully registered."),
-    SUCCESSFULLY_UNREGISTER(StatusType.OK, "Successfully unregistered."),
+import team.steelcode.simple_auths.data.language_providers.ModLanguageProviderES;
 
-    SAME_PASSWORD(StatusType.OK_WARN, "Password not changed. The password its the same than registered one."),
-    PASSWORD_CHANGED(StatusType.OK, "Successfully changed password."),
-    ERROR(StatusType.KO_ERROR, "Unexpected error, please, contact with administrator.");
+public enum RegisterStatus implements IStatus {
+    ALREADY_EXISTS(StatusType.KO_WARN, ModLanguageProviderES.PREFIX + "already_exists"),
+    PLAYER_DOESNT_EXISTS(StatusType.KO_WARN, ModLanguageProviderES.PREFIX + "doesnt_exists"),
+    SUCCESSFULLY_REGISTER(StatusType.OK, ModLanguageProviderES.PREFIX + "register_successful"),
+    SUCCESSFULLY_UNREGISTER(StatusType.OK, ModLanguageProviderES.PREFIX + "unregister_successful"),
+    SAME_PASSWORD(StatusType.OK_WARN, ModLanguageProviderES.PREFIX + "same_password"),
+    PASSWORD_CHANGED(StatusType.OK, ModLanguageProviderES.PREFIX + "password_changed"),
+    ERROR(StatusType.KO_ERROR, ModLanguageProviderES.PREFIX + "unexpected_error");
 
 
     private StatusType status;

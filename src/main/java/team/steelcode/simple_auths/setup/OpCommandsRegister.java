@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import team.steelcode.simple_auths.data.db.service.PlayerEntityDBService;
 import team.steelcode.simple_auths.data.enums.IStatus;
 import team.steelcode.simple_auths.data.enums.StatusType;
+import team.steelcode.simple_auths.data.language_providers.ModLanguageProviderES;
 
 import java.util.Collection;
 
@@ -39,12 +40,12 @@ public class OpCommandsRegister {
 
             playerNames.append(player.getScoreboardName()).append(", ");
 
-            player.connection.disconnect(Component.literal("You were unregistered"));
+            player.connection.disconnect(Component.translatable("You were unregistered"));
         }
 
         playerNames.replace(playerNames.lastIndexOf(", "), playerNames.length() - 1, ".");
 
-        context.getSource().getPlayer().sendSystemMessage(Component.literal("Players successfully unregistered: " + playerNames));
+        context.getSource().getPlayer().sendSystemMessage(Component.translatable(ModLanguageProviderES.PREFIX + "unregister_successful"+ playerNames));
 
         return 1;
 

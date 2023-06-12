@@ -11,7 +11,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import team.steelcode.simple_auths.configs.JdbcConnections;
-import team.steelcode.simple_auths.data.PlayerCache;
+import team.steelcode.simple_auths.data.LoggedPlayerCache;
+import team.steelcode.simple_auths.data.UnloggedPlayerCache;
 import team.steelcode.simple_auths.modules.events.ServerEventHandler;
 import team.steelcode.simple_auths.setup.ConfigSpecRegister;
 import team.steelcode.simple_auths.setup.ModCommandsRegister;
@@ -46,11 +47,12 @@ public class SimpleAuths {
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) throws IOException {
+    public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("Initializing SimpleAuths configs.");
         JdbcConnections.initializeSessionFactory();
-        PlayerCache.initialize();
+        LoggedPlayerCache.initialize();
+        UnloggedPlayerCache.initialize();
 
     }
 }

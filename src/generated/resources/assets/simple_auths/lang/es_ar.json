@@ -1,0 +1,14 @@
+{
+  "simple_auths.translations.already_exists": "Ya estas registrado",
+  "simple_auths.translations.already_logged": "¡Ya estas logueado!",
+  "simple_auths.translations.doesnt_exists": "Aun no estas registrado, registrate con /register",
+  "simple_auths.translations.login_successful": "¡Te has logueado correctamente!",
+  "simple_auths.translations.password_changed": "La contraseña se ha cambiado correctamente.",
+  "simple_auths.translations.password_incorrect": "La contraseña es incorrecta, por favor intantalo de nuevo.",
+  "simple_auths.translations.password_mismatch": "Las contraseñas no coinciden, por favor intentalo de nuevo.",
+  "simple_auths.translations.register_successful": "¡Te has registrado correctamente!",
+  "simple_auths.translations.relogin_needed": "Ha ocurrido un error, Necesitas volver a loguearte",
+  "simple_auths.translations.same_password": "Las contraseñas son iguales, no se ha cambiado la contraseña.",
+  "simple_auths.translations.unexpected_error": "Se ha producido un error inesperado, contacta con un administrador.",
+  "simple_auths.translations.unregister_successful": "La cuenta del jugador se ha borrado correctamente."
+}

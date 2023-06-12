@@ -10,6 +10,8 @@ public class ConfigSpecRegister {
     public static ForgeConfigSpec.ConfigValue<String> DB_USER;
     public static ForgeConfigSpec.ConfigValue<String> DB_PASSWORD;
     public static ForgeConfigSpec.ConfigValue<String> DB_SHOW_SQL;
+    public static ForgeConfigSpec.ConfigValue<String> DEFAULT_GAMETYPE;
+
 
     public static ForgeConfigSpec.Builder SERVER_CONFIG;
 
@@ -30,7 +32,12 @@ public class ConfigSpecRegister {
                 ##########################
                 #  SIMPLE AUTHS CONFIG  ##
                 ##########################
-                """);
+                \n""");
+
+        builder.comment("=============================================");
+        builder.comment("\tDatabase configs: ");
+        builder.comment("=============================================");
+
         builder.comment(" If you don't know how to configure these parameters or where to get them, you can ask in our discord: https://discord.gg/YHqMTRYAMT");
         builder.comment(" We only accept MySQL databases!");
         DB_URL = builder.define("database_url", "jdbc:mysql://0.0.0.0:3306/db_name");
@@ -38,6 +45,11 @@ public class ConfigSpecRegister {
         DB_PASSWORD = builder.define("database_password", "password");
         DB_SHOW_SQL = builder.define("show_sql", "false");
 
+        builder.comment("=============================================");
+        builder.comment("\tLogin configs: ");
+        builder.comment("=============================================");
+
+        DEFAULT_GAMETYPE = builder.define("default_gametype", "survival");
     }
 
 

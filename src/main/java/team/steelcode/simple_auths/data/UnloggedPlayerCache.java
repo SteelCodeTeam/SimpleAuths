@@ -1,5 +1,6 @@
 package team.steelcode.simple_auths.data;
 
+import net.minecraft.world.phys.Vec3;
 import team.steelcode.simple_auths.data.db.entity.PlayerEntityDB;
 
 import java.util.ArrayList;
@@ -7,15 +8,19 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class PlayerCache {
+public class UnloggedPlayerCache {
 
     private static List<PlayerEntityDB> players;
 
-    public static boolean playerIsLoggedByUUID(UUID uuid) {
+    public static boolean playerIsNotloggedByUUID(UUID uuid) {
         return players.stream().anyMatch(playerEntityDB -> playerEntityDB.getUuid() == uuid);
     }
 
-    public static boolean playerIsLoggedByUsername(String username) {
+    public static PlayerEntityDB getPlayerByUUID(UUID uuid) {
+        return players.stream().filter(playerEntityDB -> playerEntityDB.getUuid() == uuid).findFirst().orElse(null);
+    }
+
+    public static boolean playerIsNotLoggedByUsername(String username) {
         return players.stream().anyMatch(playerEntityDB -> playerEntityDB.getUsername().equals(username));
     }
 
@@ -29,11 +34,25 @@ public class PlayerCache {
         players = players.stream().filter(player -> !player.getUsername().equals(username)).collect(Collectors.toList());
     }
 
-    public static void removePlayerByUsername(UUID uuid) {
+    public static void removePlayerByUIID(UUID uuid) {
         players = players.stream().filter(player -> !player.getUuid().equals(uuid)).collect(Collectors.toList());
+    }
+
+    public static Vec3 getPostionForPlayerUUID(UUID uuid) throws Exception {
+        Vec3 vec = players.stream()
+                .filter(player -> player.getUuid().equals(uuid))
+                .findFirst()
+                .orElse(null).getSpawnPos();
+
+        if (vec != null) {
+            return vec;
+        } else {
+            throw new Exception("Player is not in notLoggedList!");
+        }
     }
 
     public static void initialize() {
         players = new ArrayList<>();
     }
+
 }

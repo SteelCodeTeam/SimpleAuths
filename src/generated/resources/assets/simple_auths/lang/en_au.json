@@ -1,0 +1,14 @@
+{
+  "simple_auths.translations.already_exists": "You are already registered!",
+  "simple_auths.translations.already_logged": "You were already logged!",
+  "simple_auths.translations.doesnt_exists": "You are not registered, register now with /register",
+  "simple_auths.translations.login_successful": "Successfully login!",
+  "simple_auths.translations.password_changed": "Password sucessfully changed.",
+  "simple_auths.translations.password_incorrect": "Password incorrect. Please try it again!",
+  "simple_auths.translations.password_mismatch": "Password missmatch. Please try it again!",
+  "simple_auths.translations.register_successful": "Te has registrado correctamente!",
+  "simple_auths.translations.relogin_needed": "You need to sign in again in the server.",
+  "simple_auths.translations.same_password": "Passwords are the same, please type another password.",
+  "simple_auths.translations.unexpected_error": "Unexpected error, contact with administrator.",
+  "simple_auths.translations.unregister_successful": "The account of the player are succesfully unregistered."
+}

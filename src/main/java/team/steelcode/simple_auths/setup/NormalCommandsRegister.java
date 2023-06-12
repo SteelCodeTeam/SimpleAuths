@@ -7,13 +7,16 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import team.steelcode.simple_auths.SimpleAuths;
 import team.steelcode.simple_auths.data.db.service.PlayerEntityDBService;
 import team.steelcode.simple_auths.data.enums.IStatus;
 import team.steelcode.simple_auths.data.enums.StatusType;
+import team.steelcode.simple_auths.data.language_providers.ModLanguageProviderES;
+import team.steelcode.simple_auths.modules.logic.LoginHandler;
+import team.steelcode.simple_auths.modules.logic.PasswordManager;
 
 public class NormalCommandsRegister {
-
-
 
 
     private static final LiteralArgumentBuilder<CommandSourceStack> loginCommand =
@@ -49,7 +52,7 @@ public class NormalCommandsRegister {
     private static int changePassword(CommandContext<CommandSourceStack> context, String password, String repeatedPassword) {
         if (password.equals(repeatedPassword)) {
             IStatus status = PlayerEntityDBService.changePasswordFromUsername(context.getSource().getPlayer().getScoreboardName(), password);
-            context.getSource().getPlayer().sendSystemMessage(Component.literal(status.getDescription()));
+            context.getSource().getPlayer().sendSystemMessage(Component.translatable(status.getDescription()));
 
             if (status.getStatus() == StatusType.KO_ERROR) {
                 return -1;
@@ -60,7 +63,7 @@ public class NormalCommandsRegister {
             }
 
         } else {
-            context.getSource().sendSystemMessage(Component.literal("Passwords mismatch, please, try it again."));
+            context.getSource().sendSystemMessage(Component.translatable(ModLanguageProviderES.PREFIX + "password_mismatch"));
             return 1;
         }
 
@@ -69,35 +72,52 @@ public class NormalCommandsRegister {
     private static int registerPlayer(CommandContext<CommandSourceStack> context, String password, String repeatedPassword) {
         if (password.equals(repeatedPassword)) {
 
-            IStatus status = PlayerEntityDBService.registerUser(context.getSource().getPlayer().getScoreboardName(), password, context.getSource().getPlayer().getUUID());
-            context.getSource().getPlayer().sendSystemMessage(Component.literal(status.getDescription()));
+            String hashedPassword = PasswordManager.hashPassword(password);
 
-            if (status.getStatus() == StatusType.KO_ERROR) {
-                return -1;
-            } else if (status.getStatus() == StatusType.KO_WARN) {
-                return 0;
+            if (hashedPassword != null) {
+                IStatus status = PlayerEntityDBService.registerUser(context.getSource().getPlayer().getScoreboardName(), hashedPassword, context.getSource().getPlayer().getUUID());
+                context.getSource().getPlayer().sendSystemMessage(Component.translatable(status.getDescription()));
+
+                if (status.getStatus() == StatusType.KO_ERROR) {
+                    return -1;
+                } else if (status.getStatus() == StatusType.KO_WARN) {
+                    return 0;
+                } else {
+                    LoginHandler.login(context.getSource().getPlayer(), context.getSource().getPlayer().getScoreboardName(), hashedPassword);
+                    return 1;
+                }
             } else {
-                return 1;
+                context.getSource().getPlayer().sendSystemMessage(Component.translatable("No se ha podido establecer una seguridad cifrando la contraseña. Habla con un administrador."));
+                return -1;
             }
-
         } else {
-            context.getSource().sendSystemMessage(Component.literal("Passwords mismatch, please, try it again."));
+            context.getSource().sendSystemMessage(Component.translatable(ModLanguageProviderES.PREFIX + "password_mismatch"));
             return 1;
         }
     }
 
     private static int loginPlayer(CommandContext<CommandSourceStack> context, String password) {
 
-        IStatus status = PlayerEntityDBService.loginUser(context.getSource().getPlayer().getScoreboardName(), password);
-        context.getSource().getPlayer().sendSystemMessage(Component.literal(status.getDescription()));
+        ServerPlayer player = context.getSource().getPlayer();
 
+        String hashedPassword = PasswordManager.hashPassword(password);
 
-        if (status.getStatus() == StatusType.KO_ERROR) {
+        if (hashedPassword != null) {
+            IStatus status = LoginHandler.login(player, player.getScoreboardName(), hashedPassword);
+            context.getSource().getPlayer().sendSystemMessage(Component.translatable(status.getDescription()));
+
+            if (status.getStatus() == StatusType.KO_ERROR) {
+                SimpleAuths.LOGGER.error(status.getDescription());
+                return -1;
+            } else if (status.getStatus() == StatusType.KO_WARN) {
+                SimpleAuths.LOGGER.warn(status.getDescription());
+                return 0;
+            } else {
+                SimpleAuths.LOGGER.info(status.getDescription());
+                return 1;
+            }
+        } else
+            context.getSource().getPlayer().sendSystemMessage(Component.translatable("No se ha podido establecer una seguridad cifrando la contraseña. Habla con un administrador."));
             return -1;
-        } else if (status.getStatus() == StatusType.KO_WARN) {
-            return 0;
-        } else {
-            return 1;
-        }
     }
 }

@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import team.steelcode.simple_auths.configs.JdbcConnections;
-import team.steelcode.simple_auths.data.PlayerCache;
+import team.steelcode.simple_auths.data.LoggedPlayerCache;
 import team.steelcode.simple_auths.data.db.entity.PlayerEntityDB;
 import team.steelcode.simple_auths.data.enums.IStatus;
 import team.steelcode.simple_auths.data.enums.LoginStatus;
@@ -42,7 +42,7 @@ public class PlayerEntityDBRepository {
                 session.persist(playerRegistered);
                 transaction.commit();
 
-                PlayerCache.addPlayer(playerRegistered);
+                LoggedPlayerCache.addPlayer(playerRegistered);
 
                 return RegisterStatus.SUCCESSFULLY_REGISTER;
             }
@@ -61,7 +61,7 @@ public class PlayerEntityDBRepository {
 
     public static IStatus loginUser(String username, String password) {
         Transaction transaction = null;
-        if (PlayerCache.playerIsLoggedByUsername(username)) {
+        if (LoggedPlayerCache.playerIsLoggedByUsername(username)) {
             return LoginStatus.ALREADY_LOGGED;
         }
 
@@ -82,7 +82,7 @@ public class PlayerEntityDBRepository {
 
 
                 if (player.getHashedPassword().equals(password)) {
-                    PlayerCache.addPlayer(player);
+                    LoggedPlayerCache.addPlayer(player);
                     return LoginStatus.SUCCESSFULLY_LOGGED;
                 } else {
                     return LoginStatus.WRONG_PASSWORD;
@@ -127,7 +127,7 @@ public class PlayerEntityDBRepository {
                 PlayerEntityDB player = playerQuery.get();
 
 
-                if (PlayerCache.playerIsLoggedByUsername(username)) {
+                if (LoggedPlayerCache.playerIsLoggedByUsername(username)) {
                     if (player.getHashedPassword().equals(hashedPassword)) {
                         return RegisterStatus.SAME_PASSWORD;
                     } else {
@@ -179,7 +179,7 @@ public class PlayerEntityDBRepository {
                     session.remove(playerQuery.get());
                     transaction.commit();
 
-                    PlayerCache.removePlayerByUsername(username);
+                    LoggedPlayerCache.removePlayerByUsername(username);
 
                     return RegisterStatus.SUCCESSFULLY_UNREGISTER;
                 } else {
