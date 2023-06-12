@@ -74,6 +74,7 @@ And we have two mandatory dependencies:
 - Multi-account limits/controls for admin servers.
 - Add more databases supported.
 - Build some guides, by now, we can help you in our discord!
+- Do more lightweight JAR downloading dependencies directly in server start.
 
 <br>
 
@@ -110,6 +111,4 @@ We know we're going to port it to version 1.20.x, and we know we'll be adding mo
 
 #### **Stay Connected with Us**
 
-Join our Discord guild to stay in connected and receive updates: https://discord.gg/YHqMTRYAMT
-
-Also you can check our new website: https://steelcode.team :)
+ 

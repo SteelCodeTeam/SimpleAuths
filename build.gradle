@@ -6,7 +6,6 @@ plugins {
 
 group = 'team.steelcode.simple_auths'
 version = '1.0.0-1.19.2'
-
 java {
     archivesBaseName = 'simple_auths'
     toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -183,15 +182,21 @@ jar {
 jar.finalizedBy('reobfJar')
 
 tasks.register('uberJar', Jar) {
+    zip64(true)
     archiveClassifier = 'uber'
 
     from sourceSets.main.output
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
+
     dependsOn configurations.runtimeClasspath
     from {
         configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect{ zipTree(it) }
     }
+}
+
+tasks.shadowJar {
+    setProperty("zip64", true)
 }
 
 tasks.withType(JavaCompile).configureEach {
