@@ -24,6 +24,9 @@ import java.io.IOException;
 public class SimpleAuths {
 
     public static final String MOD_ID = "simple_auths";
+
+    public static final String VERSION = "1.0.0";
+
     public static final Logger LOGGER = LogUtils.getLogger();
 
 
