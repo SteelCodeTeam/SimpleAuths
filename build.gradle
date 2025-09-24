@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'nu.studer.jooq' version '8.2.1'
     id 'idea'
     id 'net.neoforged.moddev' version '2.0.107'
 }
@@ -19,7 +20,6 @@ base {
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
-    // Specify the version of NeoForge to use.
     version = project.neo_version
 
     parchment {
@@ -73,7 +73,7 @@ neoForge {
             // "REGISTRYDUMP": For getting the contents of all registries.
             systemProperty 'forge.logging.markers', 'REGISTRIES'
 
-            // Recommended logging level for the console
+            // Recommened logging level for the console
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             logLevel = org.slf4j.event.Level.DEBUG
@@ -98,24 +98,48 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // compileOnly "mezz.jei:jei-${mc_version}-forge-api:${jei_version}"
-    // runtimeOnly "mezz.jei:jei-${mc_version}-forge:${jei_version}"
 
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
+    jarJar(implementation("com.mysql:mysql-connector-j")) {
+        version {
+            strictly '[9.3.0,)'
+            prefer '9.4.0'
+        }
+    }
 
-    // Example mod dependency using a file as dependency
-    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
+    jarJar(implementation("com.zaxxer:HikariCP")) {
+        version {
+            strictly '[7.0.2,)'
+            prefer '7.0.2'
+        }
+    }
 
-    // Example project dependency using a sister or child project:
-    // implementation project(":myproject")
+    jarJar(implementation("org.slf4j:slf4j-api")) {
+        version {
+            strictly '[2.0.17,)'
+            prefer '2.0.17'
+        }
+    }
 
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    jarJar(implementation("jakarta.interceptor:jakarta.interceptor-api")) {
+        version {
+            strictly '[2.1.0,)'
+            prefer '2.2.0'
+        }
+    }
+
+    jarJar(implementation("jakarta.enterprise:jakarta.enterprise.cdi-api")) {
+        version {
+            strictly '[4.1.0,)'
+            prefer '4.1.0'
+        }
+    }
+
+    additionalRuntimeClasspath "com.mysql:mysql-connector-j:9.4.0"
+    additionalRuntimeClasspath "com.zaxxer:HikariCP:7.0.2"
+    additionalRuntimeClasspath "org.slf4j:slf4j-api:2.0.17"
+    additionalRuntimeClasspath "jakarta.interceptor:jakarta.interceptor-api:2.2.0"
+    additionalRuntimeClasspath "jakarta.enterprise:jakarta.enterprise.cdi-api:4.1.0"
+
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -158,7 +182,6 @@ publishing {
     }
 }
 
-// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
     module {
         downloadSources = true

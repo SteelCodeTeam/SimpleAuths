@@ -6,6 +6,9 @@
   "mixins": [
   ],
   "client": [
+    "KeyMappingMixin"
+  ],
+  "server": [
   ],
   "injectors": {
     "defaultRequire": 1
